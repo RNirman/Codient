@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: codient_db
+    environment:
+      POSTGRES_USER: codient_user
+      POSTGRES_PASSWORD: codient_password
+      POSTGRES_DB: codient_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - codient_pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: codient_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - codient_redis_data:/data
+    restart: unless-stopped
+
+volumes:
+  codient_pg_data:
+  codient_redis_data:
