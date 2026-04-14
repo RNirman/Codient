@@ -1,12 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Terminal, LayoutDashboard, History, User } from 'lucide-react';
+import { Terminal, LayoutDashboard, History, User as UserIcon, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   const navLinks = [
     { name: 'Problems', path: '/problems', icon: LayoutDashboard },
-    { name: 'Submissions', path: '/submissions', icon: History },
+    ...(user ? [{ name: 'Submissions', path: '/submissions', icon: History }] : []),
   ];
 
   return (
@@ -40,13 +42,32 @@ const Navbar = () => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <button className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:bg-white/5 text-sm font-medium transition-all text-gray-300 hover:text-white">
-          <User size={16} />
-          <span>Sign In</span>
-        </button>
+        {user ? (
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-sm font-medium text-gray-300">
+              <div className="w-8 h-8 rounded-full bg-codient-primary/20 flex items-center justify-center text-codient-primary">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+              <span className="hidden sm:block">{user.name}</span>
+            </div>
+            <button 
+              onClick={logout}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 hover:border-codient-error hover:bg-codient-error/10 hover:text-codient-error text-sm font-medium transition-all text-gray-400"
+            >
+              <LogOut size={16} />
+              <span className="hidden sm:block">Sign Out</span>
+            </button>
+          </div>
+        ) : (
+          <Link to="/login" className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 hover:border-white/20 hover:bg-white/5 text-sm font-medium transition-all text-gray-300 hover:text-white">
+            <UserIcon size={16} />
+            <span>Sign In</span>
+          </Link>
+        )}
       </div>
     </nav>
   );
 };
 
 export default Navbar;
+

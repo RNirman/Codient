@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CodeEditor from '../components/CodeEditor';
 import TerminalOutput from '../components/TerminalOutput';
 import { Play, Send } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Workspace = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  
   const [problem, setProblem] = useState(null);
   const [language, setLanguage] = useState('python');
   const [code, setCode] = useState('');
@@ -29,13 +33,26 @@ const Workspace = () => {
   }, [id]);
 
   const handleRunCode = async () => {
+    if (!user) {
+       setStatus('error');
+       setOutput({
+          status: 'Authentication Required',
+          time: 'N/A',
+          memory: 'N/A',
+          stdout: 'Please sign in to submit your code.'
+       });
+       // Optional: Redirect immediately or let them click the link
+       // navigate('/login');
+       return;
+    }
+
     setStatus('running');
     setOutput(null);
 
     try {
       // Create execution request
       const res = await axios.post('http://localhost:3000/api/submissions', {
-        userId: 1, // Mock user ID for now since auth isn't wired in frontend
+        userId: user.id, 
         problemId: parseInt(id),
         language,
         code
@@ -144,3 +161,4 @@ const Workspace = () => {
 };
 
 export default Workspace;
+

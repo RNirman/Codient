@@ -1,6 +1,7 @@
 const express = require('express');
 const { Queue } = require('bullmq');
 const prisma = require('../db');
+const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -11,9 +12,10 @@ const submissionQueue = new Queue('submissions', {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { userId, problemId, language, code } = req.body;
+    const { problemId, language, code } = req.body;
+    const userId = req.user.id;
     
     // 1. Create a submission record in DB
     const submission = await prisma.submission.create({
@@ -40,9 +42,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   try {
     const submissions = await prisma.submission.findMany({
+      where: { userId: req.user.id },
       orderBy: { createdAt: 'desc' },
       take: 20,
       include: { problem: { select: { title: true } } }
@@ -53,12 +56,14 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const submission = await prisma.submission.findUnique({
       where: { id: parseInt(req.params.id) }
     });
-    if (!submission) return res.status(404).json({ error: 'Not found' });
+    if (!submission || submission.userId !== req.user.id) {
+      return res.status(404).json({ error: 'Not found' });
+    }
     res.json(submission);
   } catch (err) {
     res.status(500).json({ error: err.message });
