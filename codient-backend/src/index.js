@@ -7,6 +7,7 @@ dotenv.config();
 const authRoutes = require('./routes/auth');
 const problemRoutes = require('./routes/problems');
 const submissionRoutes = require('./routes/submissions');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 // Initialize Worker
 require('./queue/worker');
@@ -22,6 +23,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/problems', problemRoutes);
 app.use('/api/submissions', submissionRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

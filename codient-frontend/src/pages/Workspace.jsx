@@ -5,6 +5,7 @@ import CodeEditor from '../components/CodeEditor';
 import TerminalOutput from '../components/TerminalOutput';
 import { Play, Send } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import ReactMarkdown from 'react-markdown';
 
 const Workspace = () => {
   const { id } = useParams();
@@ -111,7 +112,7 @@ const Workspace = () => {
             </span>
           </div>
           <div className="prose prose-invert max-w-none text-gray-300">
-            <div dangerouslySetInnerHTML={{ __html: problem.description.replace(/\\n/g, '<br/>') }} />
+            <ReactMarkdown>{problem.description.replace(/\\n/g, '\n')}</ReactMarkdown>
           </div>
         </div>
       </div>

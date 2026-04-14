@@ -7,6 +7,8 @@ import Submissions from './pages/Submissions';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminDashboard from './pages/AdminDashboard';
+import Leaderboard from './pages/Leaderboard';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
             />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
           </Routes>
         </main>
       </div>

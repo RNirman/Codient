@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Terminal, LayoutDashboard, History, User as UserIcon, LogOut } from 'lucide-react';
+import { Terminal, LayoutDashboard, History, Settings, Trophy, User as UserIcon, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
@@ -8,7 +8,9 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Problems', path: '/problems', icon: LayoutDashboard },
+    { name: 'Leaderboard', path: '/leaderboard', icon: Trophy },
     ...(user ? [{ name: 'Submissions', path: '/submissions', icon: History }] : []),
+    ...(user?.role === 'ADMIN' ? [{ name: 'Admin', path: '/admin', icon: Settings }] : []),
   ];
 
   return (
