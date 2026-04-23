@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 import { Trophy, Code, Percent } from 'lucide-react';
 
 const Leaderboard = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchLeaderboard = () => {
     axios.get('http://localhost:3000/api/leaderboard')
       .then(res => {
         setLeaderboard(res.data);
@@ -16,6 +17,21 @@ const Leaderboard = () => {
         console.error('Failed to load leaderboard', err);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchLeaderboard();
+
+    // Setup WebSockets to listen for active job completions
+    const socket = io('http://localhost:3000');
+    socket.on('leaderboard_update', () => {
+      // Refresh the array instantly without spinning loader
+      fetchLeaderboard();
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (

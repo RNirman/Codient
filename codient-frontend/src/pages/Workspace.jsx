@@ -125,6 +125,7 @@ const Workspace = () => {
             className="bg-[#2d2d2d] text-gray-300 text-sm rounded px-3 py-1.5 border border-[#3d3d3d] focus:outline-none focus:border-codient-primary"
           >
             <option value="python">Python 3</option>
+            <option value="javascript">Javascript (Node.js)</option>
             <option value="cpp">C++</option>
             <option value="java">Java</option>
           </select>

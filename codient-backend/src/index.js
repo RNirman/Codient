@@ -9,12 +9,18 @@ const problemRoutes = require('./routes/problems');
 const submissionRoutes = require('./routes/submissions');
 const leaderboardRoutes = require('./routes/leaderboard');
 
-// Initialize Worker
-require('./queue/worker');
+const http = require('http');
+const { initSocket } = require('./socket');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const server = http.createServer(app);
+initSocket(server); // Attach WebSockets strictly to this server instance
+
+// Initialize Worker after Socket is available universally
+require('./queue/worker');
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Codient Backend is running' });
@@ -26,6 +32,6 @@ app.use('/api/submissions', submissionRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server and WebSockets running on port ${PORT}`);
 });

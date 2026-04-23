@@ -1,5 +1,5 @@
 const { Worker } = require('bullmq');
-const { executePython } = require('../services/dockerService');
+const { executeCode } = require('../services/dockerService');
 const prisma = require('../db');
 
 const worker = new Worker('submissions', async job => {
@@ -26,14 +26,8 @@ const worker = new Worker('submissions', async job => {
     for (const testCase of problem.testCases) {
       const startTime = Date.now();
       
-      // Execute code against test case
-      let result;
-      if (language === 'python') {
-        result = await executePython(code, testCase.input, problem.timeLimit);
-      } else {
-        // Fallback for unsupported languages for now
-        result = { status: 'Internal Error', stderr: 'Language not supported yet' };
-      }
+      // Execute dynamically against the chosen language string
+      let result = await executeCode(language, code, testCase.input, problem.timeLimit);
 
       totalTime += (Date.now() - startTime);
 
@@ -76,8 +70,16 @@ const worker = new Worker('submissions', async job => {
   }
 });
 
+const { getIo } = require('../socket');
+
 worker.on('completed', job => {
   console.log(`${job.id} has completed!`);
+  try {
+    const io = getIo();
+    io.emit('leaderboard_update');
+  } catch (err) {
+    console.error('Socket emission failed:', err.message);
+  }
 });
 
 worker.on('failed', (job, err) => {

@@ -23,9 +23,9 @@ const Home = () => {
           <Link to="/problems" className="px-8 py-4 rounded-lg bg-codient-primary text-white font-bold hover:bg-blue-600 transition-colors flex items-center gap-2 w-full sm:w-auto justify-center">
             Start Solving <ChevronRight size={20} />
           </Link>
-          <button className="px-8 py-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold transition-all w-full sm:w-auto justify-center text-center">
+          <Link to="/leaderboard" className="px-8 py-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold transition-all w-full sm:w-auto justify-center text-center">
             View Leaderboard
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-32">
