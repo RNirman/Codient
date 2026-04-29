@@ -83,7 +83,3 @@ Ensure you have the following installed on your local machine:
 - When a user submits code via the frontend, the backend creates a job and places it onto a Redis queue managed by BullMQ.
 - Worker processes pick up the jobs, spin up isolated Docker containers for the respective language (C++, Java, or JS), execute the user's code against hidden test cases, and return the output.
 - The results are saved to the PostgreSQL database via Prisma and broadcasted back to the frontend in real-time via Socket.io.
-
-## License
-
-This project is licensed under the ISC License.
