@@ -23,11 +23,11 @@ async function main() {
       description: 'You are given two non-empty linked lists representing two non-negative integers. Add the two numbers and return the sum as a linked list.\n\n(Simplified terminal version: add two integers from input)',
       difficulty: 'Medium',
       tags: ['Math'],
-      starterCode: 'import sys\na, b = map(int, sys.stdin.read().split())\n',
+      starterCode: 'a = int(input())\nb = int(input())\n',
       testCases: {
         create: [
-          { input: '243 564', expectedOutput: '807' },
-          { input: '0 0', expectedOutput: '0' },
+          { input: '243\\n564', expectedOutput: '807' },
+          { input: '0\\n0', expectedOutput: '0' },
         ],
       },
     },

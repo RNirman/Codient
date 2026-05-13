@@ -5,11 +5,7 @@ const Home = () => {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="max-w-6xl mx-auto px-6 py-20 flex flex-col items-center justify-center text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-codient-primary/10 text-codient-accent border border-codient-accent/20 mb-8 mt-10">
-          <span className="w-2 h-2 rounded-full bg-codient-accent animate-pulse"></span>
-          <span className="text-sm font-medium">Platform Early Access v0.1.0</span>
-        </div>
-        
+
         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
           Master Coding Interviews. <br className="hidden md:block"/>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-codient-primary to-codient-accent">Execute with Precision.</span>

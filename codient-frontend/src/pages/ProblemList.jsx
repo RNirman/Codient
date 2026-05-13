@@ -47,13 +47,13 @@ const ProblemList = () => {
           <tbody>
             {loading ? (
               <tr><td colSpan="4" className="py-8 text-center text-gray-500">Loading problems...</td></tr>
-            ) : problems.map((problem) => (
+            ) : problems.map((problem, index) => (
               <tr key={problem.id} className="border-b border-white/5 hover:bg-white/5 transition-colors group">
                 <td className="py-4 px-6">
                 </td>
                 <td className="py-4 px-6">
                   <Link to={`/problem/${problem.id}`} className="font-medium text-white group-hover:text-codient-primary transition-colors flex items-center gap-2">
-                    <span>{problem.id}.</span> {problem.title}
+                    <span>{index + 1}.</span> {problem.title}
                   </Link>
                   <div className="mt-1 flex gap-2">
                     {problem.tags && problem.tags.slice(0, 2).map((tag, i) => (
